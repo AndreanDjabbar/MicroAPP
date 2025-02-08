@@ -29,3 +29,9 @@ log*.log
 .vscode/
 .idea/
 *.swp
+
+
+/prisma/*.db
+/prisma/migrations/
+/prisma/dev.db
+/prisma/.env
