@@ -12,9 +12,12 @@ services:
     volumes:
       - mongodata:/data/db
 
-  feedback_service:
-    build: .
+  app:
+    build: 
+      context: .
+      dockerfile: dockerfile
     container_name: feedback_service_app
+    image: AndreanDjabbar/feedback_service:latest
     restart: always
     environment:
       DATABASE_URL: ${DATABASE_URL}
