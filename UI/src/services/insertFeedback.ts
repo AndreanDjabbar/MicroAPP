@@ -2,7 +2,7 @@ import axios from "axios";
 
 const insertFeedbackService = async (name: string, message: string) => {
     try {
-        const response = await axios.post("http://localhost:4001/feedback/sendFeedback", {
+        const response = await axios.post("http://localhost/feedback/sendFeedback", {
             name: name,
             message: message
         });

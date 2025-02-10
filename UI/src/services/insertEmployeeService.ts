@@ -1,9 +1,9 @@
-import userData from "../components/interfaces/userData";
 import axios from "axios";
+import userData from "../components/layouts/userData";
 
 const insertEmployeeService = async(formData: userData): Promise<string> => {
     try {
-        const response = await axios.post('http://localhost:4000/employee/insertEmployee', {
+        const response = await axios.post('http://localhost/employee/insertEmployee', {
             username: formData.username,
             age: formData.age,
             isMarried: formData.isMarried
@@ -15,7 +15,6 @@ const insertEmployeeService = async(formData: userData): Promise<string> => {
 
         const { status } = response.data;
         return status;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         console.log(error);
         return 'error';

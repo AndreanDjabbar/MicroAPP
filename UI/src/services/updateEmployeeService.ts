@@ -1,10 +1,10 @@
 import axios from "axios";
-import employee from "../components/interfaces/employee";
+import employee from "../components/layouts/employee";
 
 const updateEmployeeService = async (id: number, updatedEmployee: employee) => {
   try {
     console.log(id, updatedEmployee);
-    const response = await axios.put(`http://localhost:4000/employee/updateEmployee/${id}`, updatedEmployee, {
+    const response = await axios.put(`http://localhost/employee/updateEmployee/${id}`, updatedEmployee, {
       headers: {
         "Content-Type": "application/json",
       },

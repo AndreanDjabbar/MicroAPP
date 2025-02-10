@@ -1,0 +1,99 @@
+services:
+  frontend:
+    build:
+      context: ./UI
+      dockerfile: Dockerfile
+    container_name: frontend_app
+    restart: always
+    networks:
+      - micro_app_network
+    depends_on:
+      - employee_service_app
+      - feedback_service_app
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx_proxy
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+    networks:
+      - micro_app_network
+    volumes:
+      - ./UI/dist:/usr/share/nginx/html 
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
+  employee_service_app:
+    build:
+      context: ./employee-service
+      dockerfile: Dockerfile
+    container_name: employee_service_app
+    image: andreandjabbar/employee_service:latest
+    restart: always
+    networks:
+      - micro_app_network
+    environment:
+      DATABASE_URL: ${EMPLOYEE_DATABASE_URL}
+      PORT: 4000
+    depends_on:
+      - employee_service_db
+    ports:
+      - "4000:4000"
+
+  employee_service_db:
+    image: postgres:latest
+    container_name: employee_service_db
+    restart: always
+    networks:
+      - micro_app_network
+    environment:
+      POSTGRES_DB: ${EMPLOYEE_DB_NAME}
+      POSTGRES_USER: ${EMPLOYEE_DB_USER}
+      POSTGRES_PASSWORD: ${EMPLOYEE_DB_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  feedback_service_app:
+    build:
+      context: ./feedback-service
+      dockerfile: Dockerfile
+    container_name: feedback_service_app
+    image: andreandjabbar/feedback_service:latest
+    restart: always
+    networks:
+      - micro_app_network
+    environment:
+      DATABASE_URL: ${FEEDBACK_DATABASE_URL}
+      PORT: 4001
+    depends_on:
+      - feedback_service_db
+    ports:
+      - "4001:4001"
+
+  feedback_service_db:
+    image: mongo:latest
+    container_name: feedback_service_db
+    restart: always
+    networks:
+      - micro_app_network
+    environment:
+      MONGO_INITDB_DATABASE: ${FEEDBACK_DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${FEEDBACK_DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${FEEDBACK_DB_PASSWORD}
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodata:/data/db
+
+networks:
+  micro_app_network:
+
+volumes:
+  pgdata:
+  mongodata:

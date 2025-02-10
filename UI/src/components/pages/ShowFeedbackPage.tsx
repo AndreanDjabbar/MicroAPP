@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import getFeedbacksService from "../../services/getFeedbacksService";
 import feedback from "../layouts/feedback";
 
@@ -6,8 +6,9 @@ const ShowFeedbackPage = () => {
   const [feedbacks, setFeedbacks] = useState<feedback[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  
   useEffect(() => {
+    console.log(`feedbacks: ${feedbacks}`)
     const fetchFeedbacks = async () => {
       try {
         const data = await getFeedbacksService();

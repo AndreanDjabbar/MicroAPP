@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import getEmployeeService from "../../services/getEmployeeService";
 import updateEmployeeService from "../../services/updateEmployeeService";
 import deleteEmployeeService from "../../services/deleteEmployeeService";

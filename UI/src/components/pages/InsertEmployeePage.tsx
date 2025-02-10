@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import insertEmployeeService from '../../services/insertEmployeeService';
 import userData from '../layouts/userData';
 

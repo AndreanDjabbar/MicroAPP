@@ -1,4 +1,3 @@
-import React from 'react'
 import InsertEmployeePage from './components/pages/InsertEmployeePage'
 import ShowEmployeePage from './components/pages/ShowEmployeePage'
 import InsertFeedbackPage from './components/pages/InsertFeedbackPage'
