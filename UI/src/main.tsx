@@ -5,7 +5,9 @@ import InsertEmployeePage from './components/pages/InsertEmployeePage.tsx'
 import ShowEmployeePage from './components/pages/ShowEmployeePage.tsx'
 import InsertFeedbackPage from './components/pages/InsertFeedbackPage.tsx'
 import ShowFeedbackPage from './components/pages/ShowFeedbackPage.tsx'
+import RegisterPage from './components/pages/RegisterPage.tsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import LoginPage from './components/pages/LoginPage.tsx'
 
 const routers = [
   {
@@ -28,6 +30,14 @@ const routers = [
     path: '/show-feedback',
     element: <ShowFeedbackPage />
   },
+  {
+    path: '/register',
+    element: <RegisterPage />
+  },
+  {
+    path: '/login',
+    element: <LoginPage/>
+  }
 ];
 
 const root = createRoot(document.getElementById('root')!);

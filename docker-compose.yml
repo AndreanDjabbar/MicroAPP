@@ -57,7 +57,41 @@ services:
     ports:
       - "5434:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - employee_pgdata:/var/lib/postgresql/data
+
+  auth_service_app:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth_service_app
+    env_file:
+      - .env
+    image: andreandjabbar/auth_service:latest
+    restart: always
+    networks:
+      - micro_app_network
+    environment:
+      DATABASE_URL: ${auth_DATABASE_URL}
+      PORT: 4002
+    depends_on:
+      - employee_service_db
+    ports:
+      - "4002:4002"
+
+  auth_service_db:
+    image: postgres:latest
+    container_name: auth_service_db
+    restart: always
+    networks:
+      - micro_app_network
+    environment:
+      POSTGRES_DB: ${AUTH_DB_NAME}
+      POSTGRES_USER: ${AUTH_DB_USER}
+      POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD}
+    ports:
+      - "5435:5432"
+    volumes:
+      - auth_pgdata:/var/lib/postgresql/data
 
   feedback_service_app:
     build:
@@ -95,5 +129,6 @@ networks:
   micro_app_network:
 
 volumes:
-  pgdata:
+  employee_pgdata:
+  auth_pgdata:
   mongodata:
