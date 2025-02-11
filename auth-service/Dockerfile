@@ -17,9 +17,6 @@ RUN npx prisma generate
 # Copy source code
 COPY . .
 
-# Build TypeScript
-RUN npm run build
-
 # Stage 2: Runtime
 FROM node:18-alpine
 

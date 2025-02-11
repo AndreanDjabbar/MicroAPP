@@ -3,14 +3,22 @@ import getEmployeeService from "../../services/getEmployeeService";
 import updateEmployeeService from "../../services/updateEmployeeService";
 import deleteEmployeeService from "../../services/deleteEmployeeService";
 import employee from "../layouts/employee";
+import { useNavigate } from "react-router-dom";
 
 const ShowEmployeePage = () => {
   const [employees, setEmployees] = useState<employee[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [updatedData, setUpdatedData] = useState<{ [key: number]: employee }>({});
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem("tokenAuth");
+    if(!token) {
+      alert("Please login to access this page")
+      navigate("/login");
+    }
+
     const fetchEmployees = async () => {
       try {
         const data = await getEmployeeService();
@@ -20,7 +28,7 @@ const ShowEmployeePage = () => {
       }
     };
     fetchEmployees();
-  }, []);
+  }, [navigate]);
 
   const handleEdit = (id: number) => {
     setEditingId(id);
@@ -37,6 +45,11 @@ const ShowEmployeePage = () => {
       [id]: { ...prev[id], [field]: value },
     }));
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("tokenAuth");
+    navigate("/login");
+  }
 
   const handleUpdate = async (id: number) => {
     const updatedEmployee = updatedData[id];
@@ -68,6 +81,13 @@ const ShowEmployeePage = () => {
 
   return (
     <div className="border-2 p-6 border-gray-300 rounded-lg shadow-md bg-gray-800 text-white mt-10 mb-14 w-full mx-auto">
+      <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 w-[90%]  bg-white/35 backdrop-blur-lg shadow-xl p-4 flex items-center justify-between rounded-2xl border border-white/30">
+      <a href="./login" className="text-xl font-bold text-gray-900 drop-shadow-md">MicroApp</a>
+      <ul className="flex space-x-6">
+        <li><a href="../insert-data" className="text-gray-900 hover:text-gray-700 transition">Insert Employee</a></li>
+        <li><a href="../show-data" className="text-gray-900 hover:text-gray-700 transition">Show Employee</a></li>
+      </ul>
+    </nav>
       <h1 className="text-4xl text-amber-400 font-semibold text-center mb-6">Employee Data</h1>
       <div className="overflow-x-auto">
         <table className="table-auto w-full border-collapse border border-white">
@@ -134,7 +154,9 @@ const ShowEmployeePage = () => {
           </tbody>
         </table>
       </div>
-    </div>
+      <button className="fixed bottom-10 right-10  py-[15px] px-[25px] rounded-[15px] text-[#212121] bg-[#e8e8e8] font-bold text-[17px] overflow-hidden transition-all duration-[250] shadow-lg before:content-[''] before:absolute before:top-0 before:left-0 before:h-full before:w-0 before:rounded-[15px] before:bg-gray-800 before:-z-10 before:shadow-lg before:transition-all before:duration-[250ms] hover:before:w-full hover:text-amber-300 animate-bounce"
+      onClick={handleLogout}>Logout</button>
+    </div> 
   );
 };
 
