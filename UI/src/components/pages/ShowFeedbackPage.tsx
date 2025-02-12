@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import getFeedbacksService from "../../services/getFeedbacksService";
 import feedback from "../layouts/feedback";
+import NavLayout from "./NavLayout";
 import { useNavigate } from "react-router-dom";
 
 const ShowFeedbackPage = () => {
@@ -11,15 +12,21 @@ const ShowFeedbackPage = () => {
   
   const handleLogout = () => {
     localStorage.removeItem("tokenAuth");
+    localStorage.removeItem("adminAccess");
     navigate("/login");
   }
 
   useEffect(() => {
     const token = localStorage.getItem("tokenAuth");
     if(!token) {
-      alert("Please login to access this page")
       navigate("/login");
     }
+
+    const adminAccess = localStorage.getItem("adminAccess");
+    if(!adminAccess) {
+      navigate("/admin-validation");
+    }
+
     const fetchFeedbacks = async () => {
       try {
         const data = await getFeedbacksService();
@@ -37,6 +44,7 @@ const ShowFeedbackPage = () => {
 
   return (
     <div className="border-2 border-gray-800 bg-gray-900 p-6 rounded-xl shadow-lg mt-10 mb-16">
+      <NavLayout></NavLayout>
       <h1 className="text-4xl font-bold text-amber-400 mb-6 text-center">
         Feedbacks
       </h1>

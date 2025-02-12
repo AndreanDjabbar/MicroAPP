@@ -4,7 +4,7 @@ import feedback from "../components/layouts/feedback";
 const getFeedbacksService = async (): Promise<feedback[]> => {
   try {
     const response = await axios.get<{ feedbacks: feedback[] }>(
-      "http://localhost/feedback/getFeedbacks"
+      "http://localhost:4001/feedback/getFeedbacks"
     );
     
     console.log("✅ API Full Response:", response.data);

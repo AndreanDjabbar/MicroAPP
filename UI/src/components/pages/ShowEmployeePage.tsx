@@ -4,6 +4,7 @@ import updateEmployeeService from "../../services/updateEmployeeService";
 import deleteEmployeeService from "../../services/deleteEmployeeService";
 import employee from "../layouts/employee";
 import { useNavigate } from "react-router-dom";
+import NavLayout from "./NavLayout";
 
 const ShowEmployeePage = () => {
   const [employees, setEmployees] = useState<employee[]>([]);
@@ -15,7 +16,6 @@ const ShowEmployeePage = () => {
   useEffect(() => {
     const token = localStorage.getItem("tokenAuth");
     if(!token) {
-      alert("Please login to access this page")
       navigate("/login");
     }
 
@@ -48,6 +48,7 @@ const ShowEmployeePage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("tokenAuth");
+    localStorage.removeItem("adminAccess");
     navigate("/login");
   }
 
@@ -81,13 +82,7 @@ const ShowEmployeePage = () => {
 
   return (
     <div className="border-2 p-6 border-gray-300 rounded-lg shadow-md bg-gray-800 text-white mt-10 mb-14 w-full mx-auto">
-      <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 w-[90%]  bg-white/35 backdrop-blur-lg shadow-xl p-4 flex items-center justify-between rounded-2xl border border-white/30">
-      <a href="./login" className="text-xl font-bold text-gray-900 drop-shadow-md">MicroApp</a>
-      <ul className="flex space-x-6">
-        <li><a href="../insert-data" className="text-gray-900 hover:text-gray-700 transition">Insert Employee</a></li>
-        <li><a href="../show-data" className="text-gray-900 hover:text-gray-700 transition">Show Employee</a></li>
-      </ul>
-    </nav>
+      <NavLayout></NavLayout>
       <h1 className="text-4xl text-amber-400 font-semibold text-center mb-6">Employee Data</h1>
       <div className="overflow-x-auto">
         <table className="table-auto w-full border-collapse border border-white">

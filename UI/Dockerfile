@@ -1,23 +1,15 @@
-# Use an official Node.js image as a base image
-FROM node:18-alpine
+# Stage 1: Build React App
+FROM node:18-alpine AS build
 
-# Set the working directory to /app
 WORKDIR /app
-
-# Copy the package.json and package-lock.json (or yarn.lock) first to leverage Docker's cache
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
-
-# Copy the rest of the frontend application code
 COPY . .
-
-# Build the frontend project (this assumes the "vite build" step generates the "dist" folder)
 RUN npm run build
 
-# Expose the port if needed (optional, for local testing)
-EXPOSE 3000
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Set the entrypoint for the container (optional, if you want to run a dev server in Docker)
-CMD ["npm", "run", "dev"]
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

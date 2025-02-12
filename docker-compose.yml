@@ -10,22 +10,8 @@ services:
     depends_on:
       - employee_service_app
       - feedback_service_app
-
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: nginx_proxy
-    restart: always
     ports:
-      - "80:80"
-    depends_on:
-      - frontend
-    networks:
-      - micro_app_network
-    volumes:
-      - ./UI/dist:/usr/share/nginx/html 
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    - "3000:80"
 
   employee_service_app:
     build:

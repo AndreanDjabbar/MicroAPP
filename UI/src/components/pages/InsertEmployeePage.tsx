@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import insertEmployeeService from '../../services/insertEmployeeService';
 import userData from '../layouts/userData';
 import { useNavigate } from 'react-router-dom';
+import NavLayout from './NavLayout';
 
 const InsertEmployeePage = () => {
     const [formData, setFormData] = useState<userData>({
@@ -13,13 +14,13 @@ const InsertEmployeePage = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("tokenAuth");
+        localStorage.removeItem("adminAccess");
         navigate("/login");
-      }
+    }
 
   useEffect(() => {
     const token = localStorage.getItem("tokenAuth");
     if(!token) {
-      alert("Please login to access this page")
       navigate("/login");
     }
   }, [navigate])
@@ -49,13 +50,7 @@ const InsertEmployeePage = () => {
 
     return (
         <div className="w-full mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
-            <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 w-[90%]  bg-white/35 backdrop-blur-lg shadow-xl p-4 flex items-center justify-between rounded-2xl border border-white/30">
-            <a href="./login" className="text-xl font-bold text-gray-900 drop-shadow-md">MicroApp</a>
-                <ul className="flex space-x-6">
-                    <li><a href="../insert-data" className="text-gray-900 hover:text-gray-700 transition">Insert Employee</a></li>
-                    <li><a href="../show-data" className="text-gray-900 hover:text-gray-700 transition">Show Employee</a></li>
-                </ul>
-            </nav>
+            <NavLayout></NavLayout>
             <h1 className="text-3xl font-bold text-amber-400 mb-6 text-center">Insert Employee</h1>
             <form onSubmit={onSubmit} className="space-y-6">
                 <div className="space-y-2">

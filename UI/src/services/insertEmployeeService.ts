@@ -3,7 +3,7 @@ import userData from "../components/layouts/userData";
 
 const insertEmployeeService = async(formData: userData): Promise<string> => {
     try {
-        const response = await axios.post('http://localhost/employee/insertEmployee', {
+        const response = await axios.post('http://localhost:4000/employee/insertEmployee', {
             username: formData.username,
             age: formData.age,
             isMarried: formData.isMarried

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import insertFeedbackService from "../../services/insertFeedback";
 import { useNavigate } from "react-router-dom";
+import NavLayout from "./NavLayout";
 
 const InsertFeedbackPage = () => {
   const [name, setName] = useState("");
@@ -9,6 +10,7 @@ const InsertFeedbackPage = () => {
   
   const handleLogout = () => {
     localStorage.removeItem("tokenAuth");
+    localStorage.removeItem("adminAccess");
     navigate("/login");
   }
 
@@ -29,6 +31,7 @@ const InsertFeedbackPage = () => {
 
   return (
     <div className="w-full mx-auto bg-gray-900 text-white p-6 rounded-2xl shadow-xl mt-10">
+      <NavLayout></NavLayout>
       <h1 className="text-3xl font-bold text-amber-400 text-center mb-4">Insert Feedback</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

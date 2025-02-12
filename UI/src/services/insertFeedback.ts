@@ -2,14 +2,12 @@ import axios from "axios";
 
 const insertFeedbackService = async (name: string, message: string) => {
     try {
-        const response = await axios.post("http://localhost/feedback/sendFeedback", {
+        const response = await axios.post("http://localhost:4001/feedback/sendFeedback", {
             name: name,
             message: message
         });
-
-        const { status } = response;
-        alert(`Insert feedback success: ${status}`);
-        console.log(response);
+        const {status} = response.data;
+        alert(`Insert feedback ${status}`);
     } catch (error) {
         if (axios.isAxiosError(error)) {
             if (error.response) {

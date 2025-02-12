@@ -2,7 +2,7 @@ import axios from "axios";
 
 const deleteEmployeeService = async(id: number) => {
     try {
-        const response = await axios.delete(`http://localhost/employee/deleteEmployee/${id}`);
+        const response = await axios.delete(`http://localhost:4000/employee/deleteEmployee/${id}`);
         const {message} = response.data;
         console.log(`message: ${message}`);
         return message;
