@@ -5,6 +5,7 @@ import deleteEmployeeService from "../../services/deleteEmployeeService";
 import employee from "../layouts/employee";
 import { useNavigate } from "react-router-dom";
 import NavLayout from "./NavLayout";
+import extractToPDF from "../../services/extractToPDF";
 
 const ShowEmployeePage = () => {
   const [employees, setEmployees] = useState<employee[]>([]);
@@ -12,6 +13,8 @@ const ShowEmployeePage = () => {
   const [updatedData, setUpdatedData] = useState<{ [key: number]: employee }>({});
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
+  const [showMenu, setShowMenu] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("tokenAuth");
@@ -38,6 +41,21 @@ const ShowEmployeePage = () => {
       [id]: employees.find((emp) => emp.id === id) || { id, name: "", age: 0, isMarried: false, updatedAt: new Date() },
     }));
   };
+
+  useEffect(() => {
+    let timer:number;
+    if (isHovered) {
+      timer = setTimeout(() => {
+        setShowMenu(true);
+      }, 500);
+    } else {
+      timer = setTimeout(() => {
+        setShowMenu(false);
+      }, 200)
+    }
+
+    return () => clearTimeout(timer);
+  }, [isHovered]);
 
   const handleInputChange = (id: number, field: keyof employee, value: unknown) => {
     setUpdatedData((prev) => ({
@@ -83,6 +101,21 @@ const ShowEmployeePage = () => {
   return (
     <div className="border-2 p-6 border-gray-300 rounded-lg shadow-md bg-gray-800 text-white mt-10 mb-14 w-full mx-auto">
       <NavLayout></NavLayout>
+      <a
+        className="bg-amber-600 p-3 rounded-lg relative hover:bg-amber-900"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        Extract Data
+        {showMenu && (
+          <div className="absolute top-full left-0 mt-2 bg-gray-900 text-white p-3 rounded-lg shadow-lg backdrop-blur-md transition-opacity duration-300">
+            <p className="text-sm font-semibold">Extract as:</p>
+              <button className="mt-2 bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded transition"
+              onClick={() =>{extractToPDF(employees)}}>PDF</button>
+            <button className="mt-2 bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded transition">Excel</button>
+          </div>
+        )}
+      </a>
       <h1 className="text-4xl text-amber-400 font-semibold text-center mb-6">Employee Data</h1>
       <div className="overflow-x-auto">
         <table className="table-auto w-full border-collapse border border-white">

@@ -6,7 +6,7 @@ const NavLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 w-[90%] bg-white/35 backdrop-blur-lg shadow-xl p-4 flex flex-col items-center rounded-2xl border border-white/30 overflow-hidden">
+    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 w-[90%] bg-white/35 backdrop-blur-lg shadow-xl p-4 flex flex-col items-center rounded-2xl border border-white/30 overflow-hidden z-50">
       <div className="flex items-center justify-between w-full">
         <a href="./login" className="text-xl font-bold text-gray-900 drop-shadow-md">MicroApp</a>
         <button onClick={() => setIsOpen(!isOpen)} className="text-black">
